@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'question_bank.dart';
 
 void main() => runApp(Quizzler());
 
@@ -25,6 +26,30 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
+
+  void validator(bool value) {
+    if (ques[questionNumber].ans == value) {
+      indicator.add(
+          Icon(
+            Icons.done,
+            color: Colors.green,
+          )
+      );
+    } else {
+      indicator.add(
+        Icon(
+          Icons.clear,
+          color: Colors.red,
+        )
+      );
+    }.;
+    questionNumber++;
+  }
+
+  List<Icon> indicator = [];
+
+  int questionNumber = 0;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -37,7 +62,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                'This is where the question text will go.',
+                ques[questionNumber].question,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -61,7 +86,10 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                //The user picked true.
+                validator(true);
+                setState(() {
+                  Text(ques[questionNumber].question);
+                });
               },
             ),
           ),
@@ -79,12 +107,18 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                //The user picked false.
+                validator(false);
+                setState(() {
+                  Text(ques[questionNumber].question);
+                });
+
               },
             ),
           ),
         ),
-        //TODO: Add a Row here as your score keeper
+        Row(
+          children: indicator
+        )
       ],
     );
   }
